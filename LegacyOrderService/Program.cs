@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using LegacyOrderService.Models;
 using LegacyOrderService.Data;
 using Microsoft.EntityFrameworkCore;
+using LegacyOrderService.Validators;
+using FluentValidation;
 
 
 namespace LegacyOrderService
@@ -72,7 +74,19 @@ namespace LegacyOrderService
                 Quantity = qty,
                 Price = price
             };
+            // Validate order
+            var validator = new OrderValidator();
+            var validationResult = validator.Validate(order);
 
+            if (!validationResult.IsValid)
+            {
+                Console.WriteLine("Order validation failed:");
+                foreach (var error in validationResult.Errors)
+                {
+                    Console.WriteLine($" - {error.ErrorMessage}");
+                }
+                return;
+            }
             double total = order.Quantity * order.Price;
 
             Console.WriteLine("Order complete!");
