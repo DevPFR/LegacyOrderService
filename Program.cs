@@ -31,11 +31,25 @@ namespace LegacyOrderService
                 }
             } while (string.IsNullOrWhiteSpace(product));
             var productRepo = new ProductRepository();
-            double price = productRepo.GetPrice(product);
+            double price = 0.0;
+            try
+            {
+                price = productRepo.GetPrice(product);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return;
+            }
 
 
             Console.WriteLine("Enter quantity:");
-            int qty = Convert.ToInt32(Console.ReadLine());
+
+            if (!int.TryParse(Console.ReadLine(), out int qty) || qty <= 0)
+            {
+                Console.WriteLine("Invalid quantity.");
+                return;
+            }
 
             Console.WriteLine("Processing order...");
 
@@ -55,8 +69,16 @@ namespace LegacyOrderService
 
             Console.WriteLine("Saving order to database...");
             var repo = new OrderRepository();
-            repo.Save(order);
-            Console.WriteLine("Done.");
+            try
+            {
+                repo.Save(order);
+                Console.WriteLine("Done.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to save order: {ex.Message}");
+            }
+
         }
     }
 }
