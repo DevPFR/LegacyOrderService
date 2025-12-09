@@ -9,7 +9,7 @@ namespace LegacyOrderService
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Order Processor!");
-           string name = null;
+            string name = null;
             do
             {
                 Console.WriteLine("Enter customer name:");
@@ -43,7 +43,7 @@ namespace LegacyOrderService
             order.CustomerName = name;
             order.ProductName = product;
             order.Quantity = qty;
-            order.Price = 10.0;
+            order.Price = price;
 
             double total = order.Quantity * order.Price;
 
