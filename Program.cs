@@ -9,11 +9,27 @@ namespace LegacyOrderService
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Order Processor!");
-            Console.WriteLine("Enter customer name:");
-            string name = Console.ReadLine();
+           string name = null;
+            do
+            {
+                Console.WriteLine("Enter customer name:");
+                name = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    Console.WriteLine("Customer name cannot be empty. Please try again.");
+                }
+            } while (string.IsNullOrWhiteSpace(name));
 
-            Console.WriteLine("Enter product name:");
-            string product = Console.ReadLine();
+            string product = null;
+            do
+            {
+                Console.WriteLine("Enter product name:");
+                product = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(product))
+                {
+                    Console.WriteLine("Product name cannot be empty. Please try again.");
+                }
+            } while (string.IsNullOrWhiteSpace(product));
             var productRepo = new ProductRepository();
             double price = productRepo.GetPrice(product);
 
