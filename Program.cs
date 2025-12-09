@@ -1,6 +1,8 @@
 using System;
+using Microsoft.Extensions.DependencyInjection;
 using LegacyOrderService.Models;
 using LegacyOrderService.Data;
+
 
 namespace LegacyOrderService
 {
@@ -8,6 +10,13 @@ namespace LegacyOrderService
     {
         static void Main(string[] args)
         {
+
+            // Setup DI
+            var serviceProvider = new ServiceCollection()
+                .AddSingleton<IProductRepository, ProductRepository>()
+                .AddSingleton<IOrderRepository, OrderRepository>()
+                .BuildServiceProvider();
+
             Console.WriteLine("Welcome to Order Processor!");
             string name = null;
             do
@@ -30,7 +39,7 @@ namespace LegacyOrderService
                     Console.WriteLine("Product name cannot be empty. Please try again.");
                 }
             } while (string.IsNullOrWhiteSpace(product));
-            var productRepo = new ProductRepository();
+            var productRepo = serviceProvider.GetService<IProductRepository>();
             double price = 0.0;
             try
             {
@@ -53,11 +62,13 @@ namespace LegacyOrderService
 
             Console.WriteLine("Processing order...");
 
-            Order order = new Order();
-            order.CustomerName = name;
-            order.ProductName = product;
-            order.Quantity = qty;
-            order.Price = price;
+            Order order = new Order
+            {
+                CustomerName = name,
+                ProductName = product,
+                Quantity = qty,
+                Price = price
+            };
 
             double total = order.Quantity * order.Price;
 
@@ -68,7 +79,7 @@ namespace LegacyOrderService
             Console.WriteLine($"Total: ${total}");
 
             Console.WriteLine("Saving order to database...");
-            var repo = new OrderRepository();
+            var repo = serviceProvider.GetService<IOrderRepository>();
             try
             {
                 repo.Save(order);
