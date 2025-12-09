@@ -18,7 +18,7 @@ namespace LegacyOrderService
                 .BuildServiceProvider();
 
             Console.WriteLine("Welcome to Order Processor!");
-            string name = null;
+            string? name = null;
             do
             {
                 Console.WriteLine("Enter customer name:");
@@ -29,7 +29,7 @@ namespace LegacyOrderService
                 }
             } while (string.IsNullOrWhiteSpace(name));
 
-            string product = null;
+            string? product = null;
             do
             {
                 Console.WriteLine("Enter product name:");
@@ -43,7 +43,7 @@ namespace LegacyOrderService
             double price = 0.0;
             try
             {
-                price =  await productRepo.GetPriceAsync(product);
+                price = await productRepo.GetPriceAsync(product);
             }
             catch (Exception ex)
             {
@@ -64,8 +64,8 @@ namespace LegacyOrderService
 
             Order order = new Order
             {
-                CustomerName = name,
-                ProductName = product,
+                CustomerName = name!,
+                ProductName = product!,
                 Quantity = qty,
                 Price = price
             };
@@ -82,7 +82,7 @@ namespace LegacyOrderService
             var repo = serviceProvider.GetService<IOrderRepository>();
             try
             {
-                 await repo.SaveAsync(order);
+                await repo.SaveAsync(order);
                 Console.WriteLine("Done.");
             }
             catch (Exception ex)
