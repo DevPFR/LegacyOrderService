@@ -39,7 +39,7 @@ namespace LegacyOrderService
                     Console.WriteLine("Product name cannot be empty. Please try again.");
                 }
             } while (string.IsNullOrWhiteSpace(product));
-            var productRepo = serviceProvider.GetService<IProductRepository>();
+            var productRepo = serviceProvider.GetRequiredService<IProductRepository>();
             double price = 0.0;
             try
             {
@@ -79,7 +79,7 @@ namespace LegacyOrderService
             Console.WriteLine($"Total: ${total}");
 
             Console.WriteLine("Saving order to database...");
-            var repo = serviceProvider.GetService<IOrderRepository>();
+            var repo = serviceProvider.GetRequiredService<IOrderRepository>();
             try
             {
                 await repo.SaveAsync(order);
