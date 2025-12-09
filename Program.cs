@@ -8,7 +8,7 @@ namespace LegacyOrderService
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
 
             // Setup DI
@@ -43,7 +43,7 @@ namespace LegacyOrderService
             double price = 0.0;
             try
             {
-                price = productRepo.GetPrice(product);
+                price =  await productRepo.GetPriceAsync(product);
             }
             catch (Exception ex)
             {
@@ -82,7 +82,7 @@ namespace LegacyOrderService
             var repo = serviceProvider.GetService<IOrderRepository>();
             try
             {
-                repo.Save(order);
+                 await repo.SaveAsync(order);
                 Console.WriteLine("Done.");
             }
             catch (Exception ex)

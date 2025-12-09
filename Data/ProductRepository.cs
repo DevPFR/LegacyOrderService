@@ -14,10 +14,11 @@ namespace LegacyOrderService.Data
             ["Doohickey"] = 8.75
         };
 
-        public double GetPrice(string productName)
+        public async Task<double> GetPriceAsync(string productName)
+
         {
             // Simulate an expensive lookup
-            Thread.Sleep(500);
+            await Task.Delay(500);
 
             if (_productPrices.TryGetValue(productName, out var price))
                 return price;
